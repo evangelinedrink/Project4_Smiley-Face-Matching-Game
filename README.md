@@ -1,0 +1,2 @@
+# Project4_Smiley-Face-Matching-Game
+In my fourth project, I created a matching game with smiley faces.  The user has to click on the extra smiley face on the left-hand side that is not seen on the right-hand side to proceed to the next level.  For each level they access, 5 additional smiley faces show up on the left-hand side, while only 4 additional smiley faces show up on the right-hand side. This game uses internal JavaScript with event handlers, for and while loops, appendChild and removeChild (creating and removing nodes in the document).
