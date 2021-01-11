@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Matching Game</title>
+
+    <style>
+        img{
+            position: absolute; /*fixes the exact position of any image file*/
+        }
+
+        div{
+            position: absolute;
+            width: 500px; /*this sets the left and right divs to 500px square each*/
+            height: 500px;
+        }
+        
+        #rightSide{
+            left: 500px; /*moves rightSide div 500 pixels to the right, it will be lower than the leftSide div*/
+            border-left: 1px solid; /*border-left property creates a vertical line between the two divs*/
+        }
+        
+        body{
+            background-color:darkslategrey;
+        }
+
+        h1,p{
+            color:lightgrey;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Matching Smiley Face Game</h1>
+    <p>Click on the extra smiling face on the left-hand side.</p>
+    <div id="leftSide"></div> <!--Contain all smiley faces shown on the left side-->
+    <div id="rightSide"></div> <!--Contain all smiley faces shown on the right side-->
+
+    <script>
+        window.addEventListener("load", generateFaces); //Loads the function to show smiley faces when the webpage is loaded
+        let numberOfFaces=5;
+        const theLeftSide=document.querySelector("#leftSide");
+        const theRightSide=document.querySelector("#rightSide");
+        
+
+        function generateFaces(){
+            for(i=0; i<numberOfFaces; i++) {
+                let face=document.createElement("img"); //img node has been created
+                face.src="images/smiley.png"; //This will make sure that the face variable displays an image
+                let randomTop= Math.floor((Math.random()*400)+1); //Position of smiley face will be controlled by the values of randomTop and randomLeft.
+                let randomLeft= Math.floor((Math.random()*400)+1);
+                face.style.top= randomTop + "px"; //Placement of smileys in web page.
+                face.style.left= randomLeft + "px";
+                theLeftSide.appendChild(face); //Face image becomes a child of theLeftSide 
+            }
+
+            const leftSideImages= theLeftSide.cloneNode(true); //Makes a copy of all the nodes (all the smileys) in the left side of game.
+
+            let eraseSmiley=leftSideImages.lastChild;  //Variable for the lastChild node of leftSideImages.
+            leftSideImages.removeChild(eraseSmiley); //Removes one smiley on the right side of game.
+            theRightSide.appendChild(leftSideImages); //leftSideImages becomes a child node for theRightSide node.
+        
+            
+            theLeftSide.lastChild.addEventListener("click", nextLevel); //When correct smiley is clicked, next level will start.
+            
+            document.body.addEventListener("click", gameOver); //Game is over when the player does not click on the correct smiley.
+            
+
+        }
+
+        function nextLevel(){
+            event.stopPropagation(); //Event will not occur to other elements that are click in the game
+            alert("Good job! Get ready for the next level!");
+            
+            //While loop removes all the child nodes from the parent nodes.
+            while(theLeftSide.firstChild){
+                theLeftSide.removeChild(theLeftSide.firstChild);
+            }
+            while(theRightSide.firstChild){
+                theRightSide.removeChild(theRightSide.firstChild);
+            }
+            
+            numberOfFaces+=5; //Creates five more smileys.
+            generateFaces(); //Game will start with randomly placed smileys.
+        }
+
+        function gameOver(){
+            alert("You messed up. The game is over!");
+            theLeftSide.lastChild.removeEventListener("click", nextLevel); //Player will not be able to click on another smiley to get the correct answer.  
+            document.body.removeEventListener("click", gameOver); //The gameOver function will not show up again when they click on something that isn't the correct smiley.
+            
+            //While loop removes all the child nodes from the parent nodes.
+            while(theLeftSide.firstChild){
+                theLeftSide.removeChild(theLeftSide.firstChild);
+            }
+            while(theRightSide.firstChild){
+                theRightSide.removeChild(theRightSide.firstChild);
+            }
+
+            document.body.addEventListener("click", generateFaces); //Game restarts after clicking on the web page.
+            numberOfFaces=5; //Game restarts with 5 smileys. 
+            
+        }
+    </script>
+</body>
+</html>
